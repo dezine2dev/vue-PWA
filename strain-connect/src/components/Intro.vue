@@ -1,28 +1,16 @@
 <template>
   <div class="wrap">
-    <h1>Hello!</h1>
-    <h2>Welcome to StrainConnect.<br>Let's get to know each other!</h2>
-    <md-field>
-        <label>Full Name</label>
-        <md-input type="text" name="full_name"></md-input>
-    </md-field>
-    <md-field>
-        <label>Email Address</label>
-        <md-input type="email" name="email"></md-input>
-    </md-field>
-    <md-field>
-        <label>Password</label>
-        <md-input type="text" name="email"></md-input>
-    </md-field>
-    <router-link :to="{ name: 'Intro' }">
-      <button class="stepButton">Next</button>
+    <h1>Strains just for you in 3 minutes</h1>
+    <h2>Take this 3-minute medical evaluation to help provide accurate cannabis recommendation...<br>just for YOU!</h2>
+    <router-link :to="{ name: 'StepOne' }">
+      <button class="stepButton">Start</button>
     </router-link>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Hello',
+  name: 'Intro',
   data () {
     return {
 
