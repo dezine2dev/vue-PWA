@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: 'Hello',
+  name: 'Login',
   data () {
     return {
 
@@ -62,7 +62,7 @@ a {
   color: white;
   border-bottom: 2px solid !important;
 }
-router-link button.stepButton {
+button.stepButton {
   background-color: #71ccd7;
   color: white;
   text-align: center;

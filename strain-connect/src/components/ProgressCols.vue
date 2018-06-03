@@ -1,10 +1,10 @@
 <template>
-  <div id="progressCols" class="md-layout">
-    <div class="md-layout-item" :class="[{ activeStep: currentStep(1) }, '.md-elevation-1']"></div>
-    <div class="md-layout-item" :class="[{ activeStep: currentStep(2) }, '.md-elevation-1']"></div>
-    <div class="md-layout-item" :class="[{ activeStep: currentStep(3) }, '.md-elevation-1']"></div>
-    <div class="md-layout-item" :class="[{ activeStep: currentStep(4) }, '.md-elevation-1']"></div>
-    <div class="md-layout-item" :class="[{ activeStep: currentStep(5) }, '.md-elevation-1']"></div>
+  <div v-if="showProgress" id="progressCols" class="md-layout">
+    <div class="md-layout-item" :class="[{ activeStep: $store.state.step >= 0 }, '.md-elevation-1']"></div>
+    <div class="md-layout-item" :class="[{ activeStep: $store.state.step > 1 }, '.md-elevation-1']"></div>
+    <div class="md-layout-item" :class="[{ activeStep: $store.state.step > 2 }, '.md-elevation-1']"></div>
+    <div class="md-layout-item" :class="[{ activeStep: $store.state.step > 3 }, '.md-elevation-1']"></div>
+    <div class="md-layout-item" :class="[{ activeStep: $store.state.step > 4 }, '.md-elevation-1']"></div>
   </div>
 </template>
 
@@ -12,12 +12,9 @@
 
   export default {
     name: 'ProgressCols',
-    methods: {
-      currentStep(i){
-        if (i== 2){return false}
-        return true
-
-        // return this.$routes.step == i; 
+    data: function(){
+      return {
+        showProgress: true
       }
     }
   }

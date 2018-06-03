@@ -1,8 +1,9 @@
 <template>
 	<nav>
-		<div id="navBack"> < </div>
-		<div id="navLogo"></div>
-		<!-- <ProgressCols></ProgressCols> -->
+		<div id="navWrap">
+			<div id="navBack" @click="$router.go(-1)"> < </div>
+			<div id="navLogo"></div>
+		</div>
 	</nav>
 </template>
 
@@ -13,8 +14,22 @@
 		border-bottom: 2px solid #71ccd7;
 		background-color: #604ea0;
 	}
+	#navWrap {
+		display: block;
+		padding-top: 25px;
+	}
 	#navBack {
 		color: #71ccd7;
+		top: 50%;
+		transform: translateY(-50%);
+		position: relative;
+		left: 15px;
+		font-size: 24px;
+		cursor: pointer;
+		transition: 1s all;
+	}
+	#navBack:hover {
+		font-size: 26px;
 	}
 	#navBack,
 	#navLogo {
@@ -22,10 +37,15 @@
 		background-repeat: no-repeat;
 	}
 	#navLogo {
-		top: 50%;
+		background-image: url('../assets/logo.png');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		height: 50px;
+		width: 50px;
 		left: 50%;
-		transform: translateX(-50%) translateY(-50%);
-		position: absolute;
+		margin-top: -40px;
+		position: relative;
 	}
 </style>
 
@@ -34,7 +54,7 @@
 	export default {
 		name: "Header",
 		components: {
-			ProgressCols
+			'ProgressCols' : ProgressCols
 		}
 	}
 </script>

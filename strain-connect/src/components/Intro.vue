@@ -2,7 +2,7 @@
   <div class="wrap">
     <h1>Strains just for you in 3 minutes</h1>
     <h2>Take this 3-minute medical evaluation to help provide accurate cannabis recommendation...<br>just for YOU!</h2>
-    <router-link :to="{ name: 'StepOne' }">
+    <router-link :to="{ path: 'ailments' }">
       <button class="stepButton">Start</button>
     </router-link>
   </div>
@@ -21,16 +21,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-.wrap {
-  padding-left: 10%;
-  padding-right: 5%;
-  padding-top: 10%;
-  position: relative;
-  display: block;
-  color: white;
-}
-h1, h2 {
-  font-weight: normal;
+h1 {
+  text-transform: uppercase;
 }
 
 ul {
@@ -50,7 +42,7 @@ a {
   color: white;
   border-bottom: 2px solid !important;
 }
-router-link button.stepButton {
+button.stepButton {
   background-color: #71ccd7;
   color: white;
   text-align: center;
