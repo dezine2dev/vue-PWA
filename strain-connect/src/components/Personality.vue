@@ -2,7 +2,7 @@
 	<div id="personalityStep">
 		<ProgressCols></ProgressCols>
 		<div class="wrap">
-			<Step></Step>
+			<div class="stepImg"></div>
 			<h1>Personality</h1>
 			<h2>Choose One</h2>
 			<p>Choose up to 3 characteristics that describe you best. Be honest about WHO you are, not who you WANT to be.</p>
@@ -10,16 +10,23 @@
 	          <div class="md-title">Who Are You?</div>
 	        </md-card-header>
 		</div>
+
 	    <md-card-content>
           	<ListButton v-for="(trait, index) in traits" :title="trait" :key="index" :info="'personality'" :selected="false"></ListButton>
         </md-card-content>
-		<router-link :to="{ name: 'Complete' }">
+
+    	<button v-if="$store.state.personality.length < 3" class="stepButton disabled">Next</button>
+		<router-link v-else :to="{ name: 'Complete' }">
       		<button class="stepButton">Next</button>
-    	</router-link>
+    	</router-link>    	
 	</div>
 </template>
 
 <style>
+	#personalityStep .stepImg {
+		background-image: url('../assets/5.png');
+	}
+
 	#personalityStep > * {
 		color: white;
 	}
@@ -42,17 +49,20 @@
 	.md-card-content {
 		color: white;
 	}
+	@media (max-width: 480px){
+		#personalityStep .md-card-content h1 {
+			padding-left: 30px;
+		}
+	}
 </style>
 
 <script>
-	import Step from './Step'
 	import ListButton from './ListButton'
 	import ProgressCols from './ProgressCols'
 	export default {
 		components: {
 			ListButton,
-			ProgressCols,
-			Step
+			ProgressCols
 		},
 		mounted(){
 			this.$store.state.step = 5;

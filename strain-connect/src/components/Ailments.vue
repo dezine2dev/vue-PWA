@@ -23,9 +23,10 @@
 					:selected="false">
 				</ListButton>
 			</div>
-			<router-link :to="{ path: '/effects' }">
+			<router-link v-if="!isDisabled" :to="{ path: '/effects' }">
 	      		<button class="stepButton">Next</button>
 	    	</router-link>
+	    	<button v-else class="stepButton" :class="{ disabled: isDisabled }">Next</button>
 	    </div>
     	<div v-else>
     		<div class="wrap">
@@ -37,6 +38,60 @@
 		
 	</div>
 </template>
+
+
+<script>
+	import ListButton from './ListButton'
+	import Autocomplete from './Autocomplete'
+	import ProgressCols from './ProgressCols'
+	
+	export default {
+		name: 'Ailments',
+		components: {
+			ListButton,
+			Autocomplete,
+			ProgressCols
+		},
+		methods: {
+			searchChange: function(){
+				this.ailments = this.ailmentsLib.filter(ailment => ailment.includes(this.search));
+				this.searchMatch = this.ailments.length > 0 ? true : false;
+			}
+		},
+		computed: {
+		    isDisabled: function ()  {
+		        return this.$store.state.ailment.length < 1
+		    }
+		},
+		mounted(){
+			console.log(this.searchMatch);
+			this.$store.commit('toggleNext');
+		},
+		data: function(){
+			return {
+				ailmentsLib: [
+					"Chronic Pain",
+					"Migraines",
+					"Muscle Spasms",
+					"Stress",
+					"Vertigo",
+					"Nausea"
+				],
+				search: '',
+				searchMatch: true,
+				ailments: [
+					"Chronic Pain",
+					"Migraines",
+					"Muscle Spasms",
+					"Stress",
+					"Vertigo",
+					"Nausea"
+				]
+			}	
+		}
+	}
+</script>
+
 
 <style>
 	#ailmentStep .stepImg {
@@ -59,6 +114,7 @@
 	}
 	.autocomplete .md-input {
 		padding-left: 40px;
+		border-bottom: 0px !important;
 	}
 	textarea {
 		width: 100%;
@@ -68,46 +124,16 @@
 		min-height: 200px;
 		border: 10px solid #7e6db1;
 	}
-</style>
-
-<script>
-	import ListButton from './ListButton'
-	import Autocomplete from './Autocomplete'
-	import ProgressCols from './ProgressCols'
-	
-	export default {
-		name: 'Ailments',
-		components: {
-			ListButton,
-			Autocomplete,
-			ProgressCols
-		},
-		methods: {
-			searchChange: function(){
-				this.ailments = this.ailmentsLib.filter(ailment => ailment.includes(this.search));
-				this.searchMatch = this.ailments.length > 0 ? true : false;
-			}
-		},
-		data: function(){
-			return {
-				ailmentsLib: [
-					"Chronic Pain",
-					"Migraines",
-					"Muscle Spasms",
-					"Stress",
-					"Vertigo",
-					"Nausea"
-				],
-				search: '',
-				searchMatch: true,
-				ailments: [
-					"Chronic Pain",
-					"Migraines",
-					"Muscle Spasms",
-					"Stress",
-					"Vertigo",
-					"Nausea"
-				]
-		}	}
+	@media (max-width: 480px){
+		.wrap h1 {
+			font-size: 1.6em;
+			padding-left: 75px;
+			padding-top: 2px;
+			font-size: 3em;
+		}
+		.stepImg {
+			margin-left: -20px;
+			margin-top: -20px;
+		}
 	}
-</script>
+</style>

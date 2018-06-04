@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header></Header>
-      <transition name="fade">
+      <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
   </div>
@@ -35,7 +35,7 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
 
-body {
+html, body {
   padding: 0;
   margin: 0;
   height: 100%;
@@ -48,7 +48,7 @@ body {
   font-family: 'Josefin Sans','Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: white !important;
   width: 100%;
   height: 100%;
 }
@@ -112,6 +112,11 @@ button.stepButton {
   text-transform: uppercase;
   font-size: 2em;
 }
+button.stepButton.disabled {
+  background-color: #859fc7;
+  color: lightgray;
+  cursor: not-allowed;
+}
 .wrap {
   padding-left: 10%;
   padding-right: 5%;
@@ -130,5 +135,9 @@ button.stepButton {
   background-color: transparent;
   margin-left: -120px;
   margin-bottom: -93px;
+}
+input,
+textarea::placeholder {
+  color: white !important;
 }
 </style>

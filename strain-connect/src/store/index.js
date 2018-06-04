@@ -12,11 +12,28 @@ export default new Vuex.Store({
         time: null, // Day - Night
         feeling: [] // List
       },
-      personality: []
+      personality: [],
+      disableNext: false
     },
     mutations: {
+      resetState (state){
+        state = {
+                step: 0,
+                ailment: [], // List
+                effect: {
+                  high: 9, // 0 - 5
+                  time: null, // Day - Night
+                  feeling: [] // List
+                },
+                personality: [],
+                disableNext: false
+              } 
+      },
+      toggleNext (state){
+        state.disableNext = !state.disableNext
+      },
       setStep (state, n){
-        state.step = n
+        state.step = n;
       },
       updateRating (state, n) {
         state.rating = n > state.rating ? n : state.rating;

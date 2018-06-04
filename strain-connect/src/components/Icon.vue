@@ -68,6 +68,7 @@
 				this.isActive = !this.isActive
 				console.log(this.text);
 				if (this.type == "star") {
+					// Set High Integer
 					switch (this.text){
 						case "No High": this.$store.commit('setHigh', 1); break;
 						case "2": this.$store.commit('setHigh', 2); break;
@@ -75,16 +76,21 @@
 						case "4": this.$store.commit('setHigh', 4); break;
 						case "Very High": this.$store.commit('setHigh', 5); break;
 					}
-					console.log(this.$store.state.effect.high);
-						console.log(this.index);
+					// Styling
 					if (this.$store.state.effect.high > this.index) {
 						this.$set('isActive', true);
 					}
+					// State step for displaying subcomponents
+					this.$store.commit('setStep', 3);
 				}
-				else if (this.text == "Day") {
-					this.$store.commit('setTime', 'Day');
-				} else if (this.text == "Night") {
-					this.$store.commit('setTime', 'Night');
+
+				else if (this.text == "Day" || this.text == "Night") {
+					this.$store.commit('setStep', 4);
+					if (this.text == "Day"){
+						this.$store.commit('setTime', 'Day');
+					} else if (this.text == "Night") {
+						this.$store.commit('setTime', 'Night');
+					}
 				}
 			}
 		}

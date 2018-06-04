@@ -26,9 +26,8 @@
 		        	<Icon :active="isActive(1)" :type="'moon'" :text="'Night'"></Icon>
 		        </div>
 	        </div>
-	        {{highLogged}}
 
-	        <div v-show="timeLogged" id="feelingContainer" class="ratingContainer">
+	        <div v-show="$store.state.step >= 4" id="feelingContainer" class="ratingContainer">
 	        	<md-card-header>
 		          <div class="md-title">How do you <span style='font-weight: bold'> want </span> to feel?</div>
 		        </md-card-header>
@@ -36,9 +35,10 @@
 	        </div>
 		</div>
 
-		<router-link :to="{ name: 'Personality' }">
+		<router-link v-if="$store.state.effect.feeling.length > 0" :to="{ name: 'Personality' }">
       		<button class="stepButton">Next</button>
     	</router-link>
+    	<button v-else class="stepButton disabled">Next</button>
 	</div>
 </template>
 
@@ -53,7 +53,7 @@
 			ProgressCols
 		},
 		mounted(){
-			this.$state.store.step = 2
+			this.$store.commit('setStep', 2);
 		},
 		data: function(){
 			return {
@@ -76,9 +76,9 @@
 			setRating: function(n){
 				console.log("click "+n);
 				this.$store.commit('updateRating', n);
-				this.$store.commit('updateStep', 3);
+				this.$store.commit('setStep', 3);
 				this.highLogged = true;
-				this.$state.store.step = 3;
+				// this.$state.store.step = 3;
 			},
 			isActive: function(n){
 				this.$store.state.rating > n ? true : false
@@ -88,6 +88,11 @@
 </script>
 
 <style scoped>
+
+	.stepImg {
+		background-image: url('../assets/2.png');
+		background-color: white;
+	}
 
 	.md-card-header {
 		display: block;
@@ -124,6 +129,12 @@
 		width: 30%;
 		position: relative;
 		display: inline-block;
+	}
+
+	@media (max-width: 480px){
+		.ratingContainer {
+			max-width: calc(136% - 30px);
+		}
 	}
 
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<nav>
 		<div id="navWrap">
-			<div id="navBack" @click="$router.go(-1)"> < </div>
+			<div id="navBack" @click="$router.go(-1)"> {{ $route.name != 'Intro' ? '<' : ' ' }} </div>
 			<div id="navLogo"></div>
 		</div>
 	</nav>
