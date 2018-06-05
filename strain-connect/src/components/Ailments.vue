@@ -42,26 +42,82 @@
 
 <script>
 	import ListButton from './ListButton'
-	import Autocomplete from './Autocomplete'
 	import ProgressCols from './ProgressCols'
 	
 	export default {
 		name: 'Ailments',
 		components: {
 			ListButton,
-			Autocomplete,
 			ProgressCols
 		},
 		methods: {
 			searchChange: function(){
 				this.ailments = this.ailmentsLib.filter(ailment => ailment.includes(this.search));
 				this.searchMatch = this.ailments.length > 0 ? true : false;
+			},
+			searchTable: function(){
+				// Two Tiered Search For Performance Reasons
+				// Turn Search Value Into Arr
+				let searchArr = this.search.split(''),
+					broadResArr = [],
+					searchResArr = [];
+
+				for (var n = 0; n < this.ailmentsLib.length; n++) {
+					
+					// Letter Match By First Char
+					if (this.ailmentsLib[n].charAt(0) == this.search.charAt(0)){
+						broadResArr.push(this.ailmentsLib[n]);
+					}
+
+				}
+
+				// Letter Match By All Char
+				if (broadResArr.length > 1) {
+
+					for (var n = 0; n < broadResArr.length; n++) {
+
+						for (i = 0; i < searchArr.length; i++) {
+
+							if (broadResArr[n].charAt(i) !== searchArr.charAt(i)){
+								break;
+							} else {
+								searchResArr.push(broadResArr[n]);
+							}
+
+						}
+					}
+				}
+
+				this.searchMatch = searchResArr.length > 0 ? true : false;
+				this.ailments = searchResArr;
+
+				// exactMatch = function(char){
+				// 	// Search Funnel Narrow
+				// 	console.log("exactMatch()");
+				// 	let count = 0;
+
+				// 	for (var i = keywordArr.length - 1; i >= 0; i--) {
+				// 		console.log(keywordArr[i]);
+				// 		console.log(td.innerHTML.toUpperCase().indexOf(keywordArr[i]))
+				// 		i == td.innerHTML.toUpperCase().indexOf(keywordArr[i]) ? count++ : tr.style.display = "none";
+				// 	}
+
+				// 	if (count == keywordArr.length) { tr.style.display = "" }
+				// }; 	
+
+				// for (i = 0; i < tr.length; i++) {
+				// 	let td = tr[i].getElementsByTagName("td")[filterIndex];
+				// 	// Search Funnel Broad
+				// 	td.innerHTML.toUpperCase().indexOf(keyword) > -1 ? exactMatch(td, tr[i]) : tr[i].style.display = "none";
+				// }
 			}
 		},
 		computed: {
 		    isDisabled: function ()  {
 		        return this.$store.state.ailment.length < 1
-		    }
+		    },
+		    searchMatch: true,
+		    search: ''
 		},
 		mounted(){
 			console.log(this.searchMatch);
@@ -77,8 +133,8 @@
 					"Vertigo",
 					"Nausea"
 				],
-				search: '',
 				searchMatch: true,
+		    	search: '',
 				ailments: [
 					"Chronic Pain",
 					"Migraines",
