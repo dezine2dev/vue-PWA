@@ -6,6 +6,7 @@ import Intro from '@/components/Intro'
 import Ailments from '@/components/Ailments'
 import Effects from '@/components/Effects'
 import Personality from '@/components/Personality'
+import Complete from '@/components/Complete'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/personality',
       name: 'Personality',
       component: Personality
+    },
+    {
+      path: '/complete',
+      name: 'Complete',
+      component: Complete
     }
     // {
     // 	path: '/step/:num',

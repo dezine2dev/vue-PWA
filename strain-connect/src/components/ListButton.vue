@@ -65,50 +65,98 @@
 	export default {
 		name: 'ListButton',
 		props: ['title', 'info', 'selected'],
-		computed: {
-			isDisabled: function(){
-				if (this.$route.name == "Ailments" && this.$store.state.ailment.length >= 1) {
-					// If More Than One Ailment Selected and Disabled the Non-Selected	
-					return this.isSelected == true ? false : true
-
-				} else if (this.$route.name == "Effects" && this.$store.state.effect.feeling.length >= 1) {
-					// If More Than One Feeling Selected and Disabled the Non-Selected	
-					return this.isSelected == true ? false : true
-
-				} else if (this.$route.name == "Personality" && this.$store.state.personality.length >= 3) {
-					// If More Than Three Personality Selected and Disabled the Non-Selected	
-					return this.isSelected == true ? false : true
-
-				} else {
-					return false
+		mounted(){
+			// For Showing Active on Back Navigation
+			console.log(this.title);
+			if (this.$store.state.ailment.length > 0){
+				for (var i = 0; i < this.$store.state.ailment.length; i++) {
+					if (this.title == this.$store.state.ailment[i]){
+						console.log(this.$store.state.ailment[i]);
+						this.loadState();
+					}
 				}
 			}
+
+			if (this.$store.state.effect.feeling.length > 0){
+				for (var i = 0; i < this.$store.state.effect.feeling.length; i++) {
+					if (this.title == this.$store.state.effect.feeling[i]){
+						this.loadState();
+					}
+				}
+			}
+
+			if (this.$store.state.personality.length > 0){
+				for (var i = 0; i < this.$store.state.personality.length; i++) {
+					if (this.title == this.$store.state.personality[i]){
+						this.loadState();
+					}
+				}
+			}	
 		},
 		data(){
 			return {
 				isSelected: this.selected,
+				isDisabled : false,
 				icon: '+'
 			} 
 		},
 		methods: {
+			
 			toggleSelected(){
-				this.isSelected = !this.isSelected
-				
+			
 				if (this.info == "feeling") {
 
 					this.icon == '+' ? this.$store.commit('addFeeling', this.title) : this.$store.commit('removeFeeling', this.title)
+					this.isSelected = !this.isSelected;
+					this.icon = this.icon == '+' ? '-' : '+';
 
 				} else if (this.info === "ailment") {
 
-					this.icon == '+' ? this.$store.commit('addAilment', this.title) : this.$store.commit('removeAilment', this.title)
+					if (this.$store.state.ailment.length < 1) {
+
+						if (this.icon == '+'){
+							this.$store.commit('addAilment', this.title) 
+						} else { 
+							this.$store.commit('removeAilment', this.title)
+						}
+
+						this.isSelected = !this.isSelected;
+						this.icon = this.icon == '+' ? '-' : '+';
+					} else {
+						if (this.icon == '-'){
+							this.$store.commit('removeAilment', this.title)
+							this.isSelected = !this.isSelected;
+							this.icon = this.icon == '+' ? '-' : '+';
+						}
+					}
 
 				} else if (this.info === "personality") {
 
-					this.icon == '+' ? this.$store.commit('addPersonality', this.title) : this.$store.commit('removePersonality', this.title)
+					if (this.$store.state.personality.length < 3) {
+
+						if (this.icon == '+'){
+							this.$store.commit('addPersonality', this.title) 
+						} else { 
+							this.$store.commit('removePersonality', this.title)
+						}
+
+						this.isSelected = !this.isSelected;
+						this.icon = this.icon == '+' ? '-' : '+';
+					} else {
+						if (this.icon == '-'){
+							this.$store.commit('removePersonality', this.title)
+							this.isSelected = !this.isSelected;
+							this.icon = this.icon == '+' ? '-' : '+';
+						}
+					}
 
 				}
-
-					this.icon = this.icon == '+' ? '-' : '+' 
+			
+			},
+			loadState(){
+				this.isDisabled = false;
+				this.isSelected = true;
+				this.icon = "-";
 			}
 		}
 	}

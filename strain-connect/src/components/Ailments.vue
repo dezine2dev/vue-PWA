@@ -10,13 +10,13 @@
 		<md-field>
 			<label>Search</label>
 			<div class="autocomplete">
-				<md-input type="text" v-model="search" @input="searchChange" />
+				<md-input type="text" v-model="search" @input="searchTable" />
   			</div>
 		</md-field>
 		<div v-if="searchMatch">
 			<div class="wrap">
 				<ListButton 
-					v-for="(ailment, index) in ailments" 
+					v-for="(ailment, index) in $store.state.ailments" 
 					:key="index" 
 					:title="ailment" 
 					:info="'ailment'" 
@@ -44,6 +44,30 @@
 	import ListButton from './ListButton'
 	import ProgressCols from './ProgressCols'
 	
+	// // outside of the component:
+	// function initialState (){
+	//   return {
+	// 		ailmentsLib: [
+	// 				"Chronic Pain",
+	// 				"Migraines",
+	// 				"Muscle Spasms",
+	// 				"Stress",
+	// 				"Vertigo",
+	// 				"Nausea"
+	// 			],
+	// 			searchMatch: true,
+	// 	    	search: '',
+	// 			ailments: [
+	// 				"Chronic Pain",
+	// 				"Migraines",
+	// 				"Muscle Spasms",
+	// 				"Stress",
+	// 				"Vertigo",
+	// 				"Nausea"
+	// 			]
+	// 	}
+	// }
+
 	export default {
 		name: 'Ailments',
 		components: {
@@ -52,72 +76,83 @@
 		},
 		methods: {
 			searchChange: function(){
-				this.ailments = this.ailmentsLib.filter(ailment => ailment.includes(this.search));
-				this.searchMatch = this.ailments.length > 0 ? true : false;
+				this.$store.state.ailments = this.$store.state.ailmentsLib.filter(ailment => ailment.includes(this.search));
+				this.searchMatch = this.$store.state.ailments.length > 0 ? true : false;
 			},
 			searchTable: function(){
 				// Two Tiered Search For Performance Reasons
 				// Turn Search Value Into Arr
-				let searchArr = this.search.split(''),
-					broadResArr = [],
-					searchResArr = [];
+				
+				if (this.search != ''){ 
 
-				for (var n = 0; n < this.ailmentsLib.length; n++) {
-					
-					// Letter Match By First Char
-					if (this.ailmentsLib[n].charAt(0) == this.search.charAt(0)){
-						broadResArr.push(this.ailmentsLib[n]);
+					let searchArr = this.search.split(''),
+						broadResArr = [],
+						searchResArr = [];
+
+					console.log(searchArr);
+
+					for (var n = 0; n < this.$store.state.ailmentsLib.length; n++) {
+						
+						console.log(this.$store.state.ailmentsLib[n].charAt(0));
+						console.log(this.search.charAt(0));
+						// Letter Match By First Char
+						if (this.$store.state.ailmentsLib[n].charAt(0).toUpperCase() == searchArr[0].toUpperCase()){
+							console.log("First Char Match");
+							broadResArr.push(this.$store.state.ailmentsLib[n]);
+						}
+
 					}
 
-				}
+					// Letter Match By All Char
+					if (broadResArr.length > 0) {
+						for (var n = 0; n < broadResArr.length; n++) {
+							console.log(n);
+							for (var i = 0; i < searchArr.length; i++) {
+								console.log(i);
+								if (broadResArr[n].charAt(i).toUpperCase() !== searchArr[i].toUpperCase()){
+									console.log("no match char: "+i);
+									break;
+								} else {
+									if (searchResArr[searchResArr.length] != broadResArr[n] ) {
+										searchResArr.push(broadResArr[n]);
+										console.log(searchResArr);
+									} else {
+										console.log('Duplicate Found - Not Adding');
+									}
+								}
 
-				// Letter Match By All Char
-				if (broadResArr.length > 1) {
-
-					for (var n = 0; n < broadResArr.length; n++) {
-
-						for (i = 0; i < searchArr.length; i++) {
-
-							if (broadResArr[n].charAt(i) !== searchArr.charAt(i)){
-								break;
-							} else {
-								searchResArr.push(broadResArr[n]);
 							}
-
 						}
 					}
+
+					this.searchMatch = searchResArr.length > 0 ? true : false;
+					this.$store.state.ailments = searchResArr;
+
+				} else {
+					console.log('Search Empty');
+					// for (var i = 0; i < this.ailmentsLib.length; i++) {
+					// 	this.ailments[i] = this.ailmentsLib[i];
+					// }
+					// this.searchMatch = true; 
+					this.resetList();
 				}
-
-				this.searchMatch = searchResArr.length > 0 ? true : false;
-				this.ailments = searchResArr;
-
-				// exactMatch = function(char){
-				// 	// Search Funnel Narrow
-				// 	console.log("exactMatch()");
-				// 	let count = 0;
-
-				// 	for (var i = keywordArr.length - 1; i >= 0; i--) {
-				// 		console.log(keywordArr[i]);
-				// 		console.log(td.innerHTML.toUpperCase().indexOf(keywordArr[i]))
-				// 		i == td.innerHTML.toUpperCase().indexOf(keywordArr[i]) ? count++ : tr.style.display = "none";
-				// 	}
-
-				// 	if (count == keywordArr.length) { tr.style.display = "" }
-				// }; 	
-
-				// for (i = 0; i < tr.length; i++) {
-				// 	let td = tr[i].getElementsByTagName("td")[filterIndex];
-				// 	// Search Funnel Broad
-				// 	td.innerHTML.toUpperCase().indexOf(keyword) > -1 ? exactMatch(td, tr[i]) : tr[i].style.display = "none";
-				// }
-			}
+			},
+			resetList: function() {
+	            // Fetch the initialState object locally, so we do not have to call the function again
+	            let initialData = initialState();
+	            // Iterate through the props
+	            for (let prop in initialData) {
+	                // Reset the prop locally.
+	                this[prop] = initialData[prop];
+	            }
+	        }
 		},
 		computed: {
 		    isDisabled: function ()  {
 		        return this.$store.state.ailment.length < 1
-		    },
-		    searchMatch: true,
-		    search: ''
+		    }
+		    // searchMatch: true,
+		    // search: ''
 		},
 		mounted(){
 			console.log(this.searchMatch);
@@ -125,24 +160,24 @@
 		},
 		data: function(){
 			return {
-				ailmentsLib: [
-					"Chronic Pain",
-					"Migraines",
-					"Muscle Spasms",
-					"Stress",
-					"Vertigo",
-					"Nausea"
-				],
+				// ailmentsLib: [
+				// 	"Chronic Pain",
+				// 	"Migraines",
+				// 	"Muscle Spasms",
+				// 	"Stress",
+				// 	"Vertigo",
+				// 	"Nausea"
+				// ],
 				searchMatch: true,
 		    	search: '',
-				ailments: [
-					"Chronic Pain",
-					"Migraines",
-					"Muscle Spasms",
-					"Stress",
-					"Vertigo",
-					"Nausea"
-				]
+				// ailments: [
+				// 	"Chronic Pain",
+				// 	"Migraines",
+				// 	"Muscle Spasms",
+				// 	"Stress",
+				// 	"Vertigo",
+				// 	"Nausea"
+				// ]
 			}	
 		}
 	}
@@ -190,6 +225,15 @@
 		.stepImg {
 			margin-left: -20px;
 			margin-top: -20px;
+		}
+	}
+	@media (max-width: 380px){
+		.plusIcon {
+			height: 20px;
+			width: 20px;
+			padding-top: 0.2px;
+			padding-left: 2px;
+			font-size: 2em;
 		}
 	}
 </style>

@@ -6,9 +6,25 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
       step: 0,
-      ailment: [], // List
+      ailments: [
+          "Chronic Pain",
+          "Migraines",
+          "Muscle Spasms",
+          "Stress",
+          "Vertigo",
+          "Nausea"
+      ],
+      ailmentsLib: [
+          "Chronic Pain",
+          "Migraines",
+          "Muscle Spasms",
+          "Stress",
+          "Vertigo",
+          "Nausea"
+      ],
+      ailment: [], // List To Be Mailed
       effect: {
-        high: 9, // 0 - 5
+        high: null, // 0 - 5
         time: null, // Day - Night
         feeling: [] // List
       },
@@ -17,17 +33,15 @@ export default new Vuex.Store({
     },
     mutations: {
       resetState (state){
-        state = {
-                step: 0,
-                ailment: [], // List
-                effect: {
-                  high: 9, // 0 - 5
-                  time: null, // Day - Night
-                  feeling: [] // List
-                },
-                personality: [],
-                disableNext: false
-              } 
+          state.step =  0;
+          state.ailment = []; // List
+          state.effect = {
+            high: null, // 0 - 5
+            time: null, // Day - Night
+            feeling: [] // List
+          };
+          state.personality = [];
+          state.disableNext = false;
       },
       toggleNext (state){
         state.disableNext = !state.disableNext

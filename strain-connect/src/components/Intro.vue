@@ -14,7 +14,7 @@
 export default {
   name: 'Intro',
   mounted(){
-    this.$store.state.commit("resetState");
+    this.$store.commit("resetState");
   },
   data () {
     return {

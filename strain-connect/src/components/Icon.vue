@@ -1,6 +1,6 @@
 <template >
 	<div class="iconWrap">
-		<div @click="toggleActive($event)" class="icon" :class="{ star: hasStar, active: isActive  }">
+		<div @click="toggleActive($event)" class="icon" :class="{ star: hasStar, moon: hasMoon, sun: hasSun, active: isActive  }">
 			<p>{{ text }}</p>
 		</div>
 	</div>
@@ -21,21 +21,28 @@
 		cursor: pointer;
 		transition: 0.5s all;
 	}
-	.star:hover {
-		transform: scale(1.1);
-	}
 	.star {
-		background-image: url();
-		background-color: transparent;
+		background-image: url('../assets/star-hover.svg');
+	}
+	.star.active {
+		background-image: url('../assets/star.svg');
 	}
 	.sun {
-		background-image: url();
+		background-image: url('../assets/sun.svg');
+	}
+	.sun:hover,
+	.sun.active {
+		background-image: url('../assets/sun-hover.svg');
 	}
 	.moon {
-		background-image: url();
+		background-image: url('../assets/moon.svg');
+	}
+	.moon:hover,
+	.moon.active {
+		background-image: url('../assets/moon-hover.svg');
 	}
 	.active {
-		background-color: yellow !important;
+		/*background-color: yellow !important;*/
 	}
 	p {
 		font-size: 14px;
@@ -48,13 +55,21 @@
 </style>
 
 <script>
+	import { mapGetters } from 'vuex' 
 	export default {
 		props: ['type', 'text', 'active', 'index'],
 		data: function(){
 			return {
 				hasStar: this.type == 'star' ? true : false,
+				hasMoon: this.type == 'moon' ? true : false,
+				hasSun: this.type == 'sun' ? true : false,
 				isActive: this.index > this.$store.state.effect.high ? true : false
 			}
+		},
+		computed: {
+			...mapGetters({
+				myState: 'getMyState'
+			})
 		},
 		methods: {
 			toggleActive: function(event){
@@ -77,8 +92,10 @@
 						case "Very High": this.$store.commit('setHigh', 5); break;
 					}
 					// Styling
-					if (this.$store.state.effect.high > this.index) {
-						this.$set('isActive', true);
+					if (this.index+1 <= this.$store.state.effect.high) {
+						// this.$set('isActive', true);
+						this.isActive = true;
+						this.$forceUpdate();
 					}
 					// State step for displaying subcomponents
 					this.$store.commit('setStep', 3);

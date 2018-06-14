@@ -120,7 +120,7 @@ button.stepButton.disabled {
 .wrap {
   padding-left: 10%;
   padding-right: 5%;
-  padding-top: 5%;
+  padding-top: 2%;
   position: relative;
   display: block;
   color: white;

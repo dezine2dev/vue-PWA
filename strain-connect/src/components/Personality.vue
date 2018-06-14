@@ -24,7 +24,7 @@
 
 <style>
 	#personalityStep .stepImg {
-		background-image: url('../assets/5.png');
+		background-image: url('../assets/3.png');
 	}
 
 	#personalityStep > * {
@@ -57,8 +57,19 @@
 </style>
 
 <script>
+	// let b = document.querySelectorAll('.listButton');
+
+	// for (var i = b.length - 1; i >= 0; i--) {
+	// 	b[i].addEventListener("click", function(){
+	// 		if () {}
+	// 	});
+	// }
+</script>
+
+<script>
 	import ListButton from './ListButton'
 	import ProgressCols from './ProgressCols'
+
 	export default {
 		components: {
 			ListButton,
