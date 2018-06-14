@@ -191,7 +191,7 @@
 	.green {
 		color: #14FF00;
 	}
-	.md-field {
+	#ailmentStep .md-field {
 		background-color: #604EA0;
 		border: 10px solid #7e6db1;
 		color: white;
@@ -200,10 +200,10 @@
 		float: left !important;
 		position: relative !important;
 	}
-	label {
+	#ailmentStep label {
 		padding-left: 40px;
 	}
-	.autocomplete .md-input {
+	#ailmentStep .autocomplete .md-input {
 		padding-left: 40px;
 		border-bottom: 0px !important;
 	}

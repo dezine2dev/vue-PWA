@@ -22,6 +22,9 @@ export default new Vuex.Store({
           "Vertigo",
           "Nausea"
       ],
+      firstName: null, // 
+      email: null,
+      zip: null,
       ailment: [], // List To Be Mailed
       effect: {
         high: null, // 0 - 5
@@ -48,6 +51,15 @@ export default new Vuex.Store({
       },
       setStep (state, n){
         state.step = n;
+      },
+      setFirstName (state, payload){
+        state.firstName = payload;
+      },
+      setEmail (state, payload){
+        state.email = payload;
+      },
+      setZip (state, payload){
+        state.zip = payload;
       },
       updateRating (state, n) {
         state.rating = n > state.rating ? n : state.rating;

@@ -4,8 +4,21 @@
     <h2>Take this 3-minute medical evaluation to help provide accurate cannabis recommendation...<br>just for YOU!</h2>
     <br>
     <h3>( Going back to this page resets the evaluation )</h3>
+    <br><br><br>
+    <md-field>
+        <label>First Name</label>
+        <md-input type="text" name="first_name" v-model="firstName"  v-on:input="nameChange"></md-input>
+    </md-field>
+    <md-field>
+        <label>Email Address</label>
+        <md-input type="email" name="email" v-model="email" v-on:input="emailChange"></md-input>
+    </md-field>
+    <md-field>
+        <label>Zip</label>
+        <md-input type="number" name="zip" v-model="zip" v-on:input="zipChange"></md-input>
+    </md-field>
     <router-link :to="{ path: 'ailments' }">
-      <button class="stepButton">Start</button>
+      <button class="stepButton" :class="{ disabled: isDisabled }" >Start</button>
     </router-link>
   </div>
 </template>
@@ -16,9 +29,32 @@ export default {
   mounted(){
     this.$store.commit("resetState");
   },
+  computed: {
+      isDisabled: function ()  {
+        let s = this.$store.state;
+
+        return s.firstName != null && s.email != null && s.zip != null ? false : true;
+
+      }
+      // searchMatch: true,
+      // search: ''
+  },
+  methods: {
+    nameChange(){
+      this.$store.commit("setFirstName", this.firstName);
+    },
+    emailChange(){
+      this.$store.commit("setEmail", this.email);
+    },
+    zipChange(){
+      this.$store.commit("setZip", this.zip);
+    }
+  },
   data () {
     return {
-
+      firstName: null,
+      email: null,
+      zip: null
     }
   }
 }
